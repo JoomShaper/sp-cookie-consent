@@ -11,7 +11,7 @@
   <description>SP Cookie Consent - A plugin to display cookie notice to the website visitors.</description>
 
   <updateservers>
-    <server type="extension" priority="1" name="System - SP Cookie Consent">http://www.joomshaper.com/updates/plg-system-cookieconsent.xml</server>
+    <server type="extension" priority="1" name="System - SP Cookie Consent">https://www.joomshaper.com/updates/plg-cookieconsent.xml</server>
   </updateservers>
 
   <languages>
