@@ -2,13 +2,18 @@
 /**
  * @package SP Cookie Consent
  * @author JoomShaper https://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2018 JoomShaper
+ * @copyright Copyright (c) 2010 - 2025 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or Later
 */
 
 defined ('_JEXEC') or die();
 
-class PlgSystemSpcookieconsent extends JPlugin
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Uri\Uri;
+
+class PlgSystemSpcookieconsent extends CMSPlugin
 {
 
     protected $autoloadLanguage = true;
@@ -16,7 +21,7 @@ class PlgSystemSpcookieconsent extends JPlugin
 	
 	function onBeforeRender() {
 	
-		if ($this->app->isAdmin())
+		if ($this->app->isClient('administrator'))
         {
 			return;
 		}
@@ -33,17 +38,17 @@ class PlgSystemSpcookieconsent extends JPlugin
 			$css .= '#sp-cookie-consent a, #sp-cookie-consent a:hover, #sp-cookie-consent a:focus, #sp-cookie-consent a:active {color: '. $link_color .'; }';
 			$css .= '#sp-cookie-consent .sp-cookie-allow {background-color: '. $button_bg_color .'; color: ' . $button_text_color . ';}';
 			$css .= '#sp-cookie-consent .sp-cookie-allow:hover, #sp-cookie-consent .sp-cookie-allow:active, #sp-cookie-consent .sp-cookie-allow:focus {color: ' . $button_text_color . ';}';
-			$doc = JFactory::getDocument();
-			JHtml::_('jquery.framework');
-			$doc->addScript(JURI::root(true) . '/plugins/system/spcookieconsent/assets/js/script.js');
+			$doc = Factory::getDocument();
+			HTMLHelper::_('jquery.framework');
+			$doc->addScript(Uri::root(true) . '/plugins/system/spcookieconsent/assets/js/script.js');
 			$doc->addStyleDeclaration($css);
-			$doc->addStylesheet(JURI::root(true) . '/plugins/system/spcookieconsent/assets/css/style.css');
+			$doc->addStylesheet(Uri::root(true) . '/plugins/system/spcookieconsent/assets/css/style.css');
 		}
 	}
 
     function onAfterRender() {
 	
-		if ($this->app->isAdmin())
+		if ($this->app->isClient('administrator'))
         {
 			return;
 		}
@@ -61,10 +66,10 @@ class PlgSystemSpcookieconsent extends JPlugin
 			$html .= '<div class="sp-cookie-consent-action"><a class="sp-cookie-close sp-cookie-allow" href="#">' . $button_text . '</a></div>';
 			$html .= '</div></div>';
 
-			$body = JResponse::getBody();
+			$body = $this->app->getBody();
 			$body = str_replace('</body>', $html . '</body>', $body);
 
-			JResponse::setBody( $body );
+			$this->app->setBody( $body );
 		}
 	}
 }
